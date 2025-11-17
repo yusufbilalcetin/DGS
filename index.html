@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DGS Pro Takip</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+    <div id="detail-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-student-name">Öğrenci Detayı</h3>
+                <button class="modal-close" onclick="closeModal()">✕</button>
+            </div>
+            <div class="modal-body">
+                <table class="detail-table">
+                    <thead>
+                        <tr>
+                            <th>Konu Adı</th>
+                            <th class="center">Kitap</th>
+                            <th class="center">Banka</th>
+                        </tr>
+                    </thead>
+                    <tbody id="modal-table-body">
+                        </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="app-container">
+        <header class="top-bar">
+            <div class="brand-area">
+                <button class="mobile-nav-toggle" onclick="toggleSidebar()">
+                    <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+                </button>
+                <div class="logo-circle">🚀</div>
+                <h1 class="logo-text">DGS Panel</h1>
+            </div>
+
+            <div class="main-nav">
+                <button class="nav-link active" onclick="showPage('dashboard')" id="nav-dash">📊 Ana Sayfa</button>
+                <button class="nav-link" onclick="showPage('checklist')" id="nav-list">✅ Kontrol Listesi</button>
+            </div>
+        </header>
+
+        <div id="dashboard-view" class="view-container active">
+            <div class="dashboard-content">
+                <h2 class="page-title">Genel Durum Özeti</h2>
+                <div id="stats-grid" class="stats-grid">
+                    <p style="color: #666; padding: 20px;">Veriler Firebase'den yükleniyor...</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="checklist-view" class="view-container" style="display: none;">
+            <div class="checklist-wrapper">
+                <div class="sub-header">
+                    <div class="tabs">
+                        <button class="tab-btn active" onclick="switchTab('kitap')">📖 Kitap</button>
+                        <button class="tab-btn" onclick="switchTab('banka')">📝 Banka</button>
+                    </div>
+                </div>
+
+                <div class="split-layout">
+                    <aside class="sidebar" id="sidebar">
+                        <div class="sidebar-top-mobile">
+                            <h3>KONULAR</h3>
+                            <button class="close-sidebar" onclick="toggleSidebar()">✕</button>
+                        </div>
+                        <ul id="topic-list">
+                            </ul>
+                    </aside>
+
+                    <main class="content-area">
+                        <div class="content-header">
+                            <h2 id="current-topic-title">Konu Seçiniz</h2>
+                            <span id="current-category-badge" class="category-badge">Ders Kitabı</span>
+                        </div>
+                        <div id="student-list" class="student-grid">
+                            </div>
+                    </main>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="script.js"></script>
+</body>
+</html>
