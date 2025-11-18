@@ -1,0 +1,38 @@
+{
+  "rules": {
+    "progress": {
+      ".read": "auth != null",
+      ".write": "auth != null"
+    },
+
+    "notes": {
+      ".read": "auth != null",
+      ".write": "auth != null && newData.isString()"
+    },
+
+    "understanding": {
+      ".read": "auth != null",
+      ".write": "auth != null"
+    },
+
+    "photos": {
+      ".read": "auth != null",
+      "$subject": {
+        "$type": {
+          "$student": {
+            ".write": "auth != null && newData.isArray()"
+          }
+        }
+      }
+    },
+
+    "storage": {
+      "rules": {
+        "photos": {
+          ".read": "auth != null",
+          ".write": "auth != null && request.resource.size < 6 * 1024 * 1024"
+        }
+      }
+    }
+  }
+}
