@@ -3,42 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DGS Pro Takip Paneli</title>
+    <title>DGS Takip Paneli</title>
+
+    <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Ana CSS -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- DETAY MODALI -->
+
+    <!-- DETAY MODAL -->
     <div id="detail-modal" class="modal-overlay">
         <div class="modal-content">
-            <!-- Modal Header -->
+
             <div class="modal-header">
                 <h3 id="modal-student-name">Öğrenci Detayı</h3>
                 <button class="modal-close" onclick="closeModal()">✕</button>
             </div>
-            
-            <!-- Ders Seçimi -->
+
+            <!-- DERS SEÇİMİ -->
             <div class="modal-tabs-wrapper" id="subject-selector-container"></div>
 
-            <!-- Sekmeler (İlerleme, Notlar, Fotoğraflar, Anlama) -->
+            <!-- TAB MENÜ -->
             <div class="tab-navigation">
-                <button class="tab-btn active" data-tab="progress" onclick="switchTab('progress')">
-                    📊 İlerleme
-                </button>
-                <button class="tab-btn" data-tab="notes" onclick="switchTab('notes')">
-                    📝 Notlar
-                </button>
-                <button class="tab-btn" data-tab="photos" onclick="switchTab('photos')">
-                    📷 Fotoğraflar
-                </button>
-                <button class="tab-btn" data-tab="understanding" onclick="switchTab('understanding')">
-                    🧠 Anlama Durumu
-                </button>
+                <button class="tab-btn active" data-tab="progress" onclick="switchTab('progress')">📊 İlerleme</button>
+                <button class="tab-btn" data-tab="notes" onclick="switchTab('notes')">📝 Notlar</button>
+                <button class="tab-btn" data-tab="photos" onclick="switchTab('photos')">📷 Fotoğraflar</button>
+                <button class="tab-btn" data-tab="understanding" onclick="switchTab('understanding')">🧠 Anlama</button>
             </div>
 
-            <!-- Modal Body -->
+            <!-- TAB İÇERİKLERİ -->
             <div class="modal-body">
-                <!-- İLERLEME SEKMESİ -->
+
+                <!-- İLERLEME TAB -->
                 <div id="tab-progress" class="tab-content active">
                     <table class="detail-table">
                         <thead>
@@ -52,65 +50,65 @@
                     </table>
                 </div>
 
-                <!-- NOTLAR SEKMESİ -->
+                <!-- NOTLAR TAB -->
                 <div id="tab-notes" class="tab-content">
                     <div class="notes-container">
                         <label class="notes-label">
                             <span id="notes-subject-icon">🧮</span>
-                            <span id="notes-subject-name">Matematik</span> - Genel Notlar
+                            <span id="notes-subject-name">Matematik</span> — Genel Notlar
                         </label>
-                        <textarea 
-                            id="general-notes" 
-                            class="notes-textarea" 
-                            placeholder="Önemli notları buraya yazın...&#10;• Temel kavramlar ve formüller&#10;• Sık çıkan soru tipleri"
-                        ></textarea>
-                        <button onclick="saveNotes()" class="save-btn">
-                            💾 Notları Kaydet
-                        </button>
-                        <div class="note-tip">
-                            💡 İpucu: Sık çıkan soru tiplerini ve formülleri not alın
-                        </div>
+
+                        <textarea id="general-notes" class="notes-textarea"
+                            placeholder="Önemli notları buraya yazın...
+• Sık çıkan soru tipleri
+• Formüller
+• Öğrenci hakkında notlar"></textarea>
+
+                        <button onclick="saveNotes()" class="save-btn">💾 Notları Kaydet</button>
                     </div>
                 </div>
 
-                <!-- FOTOĞRAFLAR SEKMESİ -->
-<div id="tab-photos" class="tab-content">
-    <div class="photos-container">
-        <!-- Ders Kitabı Fotoğrafları -->
-        <div class="photo-section">
-            <div class="photo-header">
-                <h3>📘 Ders Kitabı Fotoğrafları</h3>
-                <div class="photo-actions">
-                    <input type="file" id="file-input-kitap" accept="image/*" style="display:none" onchange="handleFileUpload('kitap', this)">
-                    <button onclick="document.getElementById('file-input-kitap').click()" class="add-photo-btn">
-                        📁 Dosya Seç
-                    </button>
+                <!-- FOTOĞRAFLAR TAB -->
+                <div id="tab-photos" class="tab-content">
+                    <div class="photos-container">
+
+                        <div class="photo-section">
+                            <div class="photo-header">
+                                <h3>📘 Ders Kitabı Fotoğrafları</h3>
+                                <div class="photo-actions">
+                                    <input id="file-input-kitap" type="file" accept="image/*" hidden
+                                        onchange="handleFileUpload('kitap', this)">
+                                    <button onclick="document.getElementById('file-input-kitap').click()" class="add-photo-btn">
+                                        📁 Dosya Seç
+                                    </button>
+                                </div>
+                            </div>
+                            <div id="photos-kitap" class="photo-grid"></div>
+                        </div>
+
+                        <div class="photo-section">
+                            <div class="photo-header">
+                                <h3>📝 Soru Bankası Fotoğrafları</h3>
+                                <div class="photo-actions">
+                                    <input id="file-input-banka" type="file" accept="image/*" hidden
+                                        onchange="handleFileUpload('banka', this)">
+                                    <button onclick="document.getElementById('file-input-banka').click()" class="add-photo-btn add-photo-btn-cyan">
+                                        📁 Dosya Seç
+                                    </button>
+                                </div>
+                            </div>
+                            <div id="photos-banka" class="photo-grid"></div>
+                        </div>
+
+                        <div class="photo-tip">
+                            💡 Fotoğraflar Cloudflare Worker + GitHub üzerinde saklanır.
+                        </div>
+
+                        <div id="upload-progress" class="upload-progress">⏳ Fotoğraf yükleniyor...</div>
+                    </div>
                 </div>
-            </div>
-            <div id="photos-kitap" class="photo-grid"></div>
-        </div>
 
-        <!-- Soru Bankası Fotoğrafları -->
-        <div class="photo-section">
-            <div class="photo-header">
-                <h3>📝 Soru Bankası Fotoğrafları</h3>
-                <div class="photo-actions">
-                    <input type="file" id="file-input-banka" accept="image/*" style="display:none" onchange="handleFileUpload('banka', this)">
-                    <button onclick="document.getElementById('file-input-banka').click()" class="add-photo-btn add-photo-btn-cyan">
-                        📁 Dosya Seç
-                    </button>
-                </div>
-            </div>
-            <div id="photos-banka" class="photo-grid"></div>
-        </div>
-
-        <div class="photo-tip">
-            💡 İpucu: Fotoğraflar Firebase Storage'a yüklenir ve güvenli şekilde saklanır
-        </div>
-    </div>
-</div>
-
-                <!-- ANLAMA DURUMU SEKMESİ -->
+                <!-- ANLAMA TAB -->
                 <div id="tab-understanding" class="tab-content">
                     <table class="detail-table">
                         <thead>
@@ -122,13 +120,13 @@
                         <tbody id="understanding-table-body"></tbody>
                     </table>
                 </div>
+
             </div>
         </div>
     </div>
 
     <!-- ANA SAYFA -->
     <div class="app-container">
-        <!-- ÜST BAR -->
         <header class="top-bar">
             <div class="brand-area">
                 <div class="logo-circle">🚀</div>
@@ -136,18 +134,18 @@
             </div>
         </header>
 
-        <!-- DASHBOARD -->
         <div class="view-container">
             <div class="dashboard-content">
                 <h2 class="page-title">📌 Genel Durum Özeti</h2>
+
                 <div id="stats-grid" class="stats-grid">
-                    <p style="color: #666; padding: 20px;">Veriler yükleniyor...</p>
+                    <p style="color:#bbb; text-align:center; padding:20px;">Veriler yükleniyor...</p>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Firebase Modülü -->
+    <!-- SCRIPT -->
     <script type="module" src="script.js"></script>
 </body>
 </html>
