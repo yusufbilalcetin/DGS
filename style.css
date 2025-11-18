@@ -689,36 +689,177 @@ body {
     display: block;
 }
 
-/* MOBİL */
+/* ===========================
+   📱 MOBİLE RESPONSIVE (GENEL)
+   =========================== */
 @media (max-width: 768px) {
 
+    body {
+        overflow: auto;
+        height: auto;
+    }
+
+    /* ÜST BAR */
+    .top-bar {
+        height: 60px;
+        padding: 0 15px;
+    }
+
+    .brand-area {
+        gap: 8px;
+    }
+
+    .logo-circle {
+        width: 36px;
+        height: 36px;
+        font-size: 1.1rem;
+    }
+
+    .logo-text {
+        font-size: 1rem;
+    }
+
+    /* DASHBOARD */
+    .stats-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .stat-card {
+        padding: 20px;
+        border-radius: 18px;
+    }
+
+    .stat-header {
+        gap: 12px;
+    }
+
+    .stat-avatar {
+        width: 45px;
+        height: 45px;
+        font-size: 1.1rem;
+    }
+
+    /* MODAL TAM EKRAN YAPISI */
     .modal-content {
         width: 100vw !important;
         height: 100vh !important;
         max-height: 100vh !important;
+        min-width: 100vw !important;
         border-radius: 0 !important;
+        margin: 0 !important;
     }
 
+    .modal-header {
+        padding: 14px 18px;
+    }
+
+    .modal-header h3 {
+        font-size: 1.05rem;
+    }
+
+    .modal-close {
+        width: 32px;
+        height: 32px;
+        font-size: 1.2rem;
+    }
+
+    /* TAB NAVİGASYON */
     .tab-navigation {
         width: 100%;
         justify-content: center;
+        padding: 10px 6px;
         gap: 6px;
-        padding: 8px;
+        border-radius: 12px;
         flex-wrap: wrap;
     }
 
     .tab-btn {
-        padding: 8px 12px;
+        padding: 7px 10px;
+        font-size: 0.75rem;
+        border-radius: 8px;
+    }
+
+    /* TABLO */
+    .detail-table {
+        table-layout: fixed;
+    }
+
+    .detail-table th {
+        font-size: 0.6rem;
+        padding: 10px 6px;
+        white-space: nowrap;
+    }
+
+    .detail-table td {
+        padding: 10px 6px;
         font-size: 0.75rem;
     }
 
+    .detail-table td:first-child {
+        font-size: 0.72rem;
+        white-space: normal;
+        line-height: 1.25;
+        word-wrap: break-word;
+    }
+
+    /* COMBOBOX */
+    .custom-select-wrapper {
+        min-width: 0;
+        width: 100%;
+    }
+
+    .custom-select-trigger {
+        padding: 6px 4px;
+        font-size: 0.65rem;
+        min-height: 32px;
+    }
+
+    .custom-options {
+        min-width: 140px !important;
+        right: 0;
+        left: auto;
+    }
+
+    .custom-option {
+        padding: 10px 12px;
+        font-size: 0.7rem;
+    }
+
+    /* NOTLAR */
+    .notes-textarea {
+        min-height: 200px;
+        font-size: 0.8rem;
+    }
+
+    /* FOTOĞRAFLAR */
     .photo-grid {
         grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+
+    .photo-item {
+        border-radius: 10px;
     }
 
     .photo-delete {
         opacity: 1;
-        width: 26px;
-        height: 26px;
+        width: 26px !important;
+        height: 26px !important;
+        font-size: 0.85rem;
+    }
+
+    /* FOTOĞRAF ÜST MENÜ BUTONLARI */
+    .add-photo-btn,
+    .add-photo-btn-cyan {
+        width: 100%;
+        text-align: center;
+        padding: 10px;
+    }
+
+    /* UPLOAD BAR */
+    .upload-progress {
+        font-size: 0.8rem;
+        padding: 12px;
     }
 }
