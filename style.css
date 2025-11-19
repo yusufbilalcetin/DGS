@@ -202,7 +202,31 @@ body {
     align-items: center;
     justify-content: center;
     border-radius: 12px;
+    position: relative;
+    overflow: hidden;
 }
+
+/* Fotoğraf */
+.avatar-box img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* Harf */
+.avatar-box span {
+    z-index: 3;
+    position: relative;
+}
+
+/* Foto varsa harfi gizle */
+.avatar-box img:not([style*="display: none"]) + span {
+    display: none;
+}
+
 
 .student-name {
     font-size: 1.3rem;

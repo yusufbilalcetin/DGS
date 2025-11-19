@@ -28,11 +28,10 @@ const SUBJECT_LABELS = {
   turkce: { text: "Türkçe", icon: "🗣️" }
 };
 
-// SADECE EMOJİ + RENK SINIFI (Kırmızı, Turuncu, Yeşil)
 const STATUS_OPTIONS = {
-  todo:  { value: "todo",  text: "🔴", icon: "🔴", class: "status-red"    },
+  todo:  { value: "todo",  text: "🔴", icon: "🔴", class: "status-red" },
   doing: { value: "doing", text: "🟠", icon: "🟠", class: "status-orange" },
-  done:  { value: "done",  text: "🟢", icon: "🟢", class: "status-green"  }
+  done:  { value: "done",  text: "🟢", icon: "🟢", class: "status-green" }
 };
 
 // KONU LİSTESİ
@@ -65,7 +64,7 @@ const dgsTopics = {
     { ad: "Kesir Problemleri", videoSayisi: 2, videoSuresi: 65 },
     { ad: "Sınav Tadında Kesirler", videoSayisi: 3, videoSuresi: 155 },
     { ad: "Yaş Problemleri", videoSayisi: 3, videoSuresi: 115 },
-    { ad: "Kâr Zarar Problemleri", videoSayisi: 4, videoSuresi: 160 },
+    { ad: "Kâr Zarar Problemleri", videoSayisi: 4, videoSayisi: 160 },
     { ad: "Karışım Problemleri", videoSayisi: 2, videoSuresi: 90 },
     { ad: "Hız Problemleri", videoSayisi: 5, videoSuresi: 200 },
     { ad: "İşçi Problemleri", videoSayisi: 2, videoSuresi: 90 },
@@ -118,38 +117,31 @@ function getStatusOption(value) {
   return STATUS_OPTIONS[value] || STATUS_OPTIONS.todo;
 }
 
-// --- YENİ HESAPLAMA: Kitap ve Banka Ayrımı ---
+// Kitap & Banka Progres hesaplama
 function calculateSeparateProgress(subject, type, student) {
-  // type: 'kitap' veya 'banka'
   let completed = 0;
   let total = 0;
 
   dgsTopics[subject].forEach((topic, i) => {
-    if (topic.ad.startsWith("#")) return; // Başlıkları atla
+    if (topic.ad.startsWith("#")) return;
 
-    total++; // Her konu 1 birim
+    total++;
 
-    // Firebase Key: dgs_dark_matematik_kitap_0_Fatih
     const dbKey = `dgs_dark_${subject}_${type}_${i}_${student}`;
-    
-    if (globalData[dbKey] === "done") {
-      completed++;
-    }
+    if (globalData[dbKey] === "done") completed++;
   });
 
   return total === 0 ? 0 : Math.round((completed / total) * 100);
 }
 
 // -----------------------------------------------------------------------------
-// 5. SAYFA YÜKLENİNCE (INIT)
+// 5. INIT — SAYFA YÜKLENİNCE
 // -----------------------------------------------------------------------------
 document.addEventListener("DOMContentLoaded", () => {
-  // Firebase'den veriyi dinle
   onValue(ref(db, "progress"), snap => {
     globalData = snap.val() || {};
     renderDashboard();
 
-    // Eğer modal açıksa, onu da anlık güncelle
     if (document.getElementById("detail-modal").style.display === "flex") {
       renderModalTable(currentModalSubject);
     }
@@ -157,14 +149,13 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // -----------------------------------------------------------------------------
-// 6. DASHBOARD RENDER (4 AYRI BARLI YAPI)
+// 6. DASHBOARD — Avatar Fotoğraflı Kart Render
 // -----------------------------------------------------------------------------
 window.renderDashboard = function () {
   const grid = document.getElementById("stats-grid");
   grid.innerHTML = "";
 
   STUDENTS.forEach(student => {
-    // 4 Ayrı Veriyi Hesapla
     const matKitap = calculateSeparateProgress("matematik", "kitap", student);
     const matBanka = calculateSeparateProgress("matematik", "banka", student);
     const turkKitap = calculateSeparateProgress("turkce", "kitap", student);
@@ -176,7 +167,12 @@ window.renderDashboard = function () {
 
     card.innerHTML = `
       <div class="card-header">
-        <div class="avatar-box">${student[0]}</div>
+
+        <div class="avatar-box">
+            <img src="images/${student.toLowerCase()}.jpg" onerror="this.style.display='none'">
+            <span>${student[0]}</span>
+        </div>
+
         <div class="student-info">
            <div class="student-name">${student}</div>
         </div>
@@ -226,6 +222,7 @@ window.renderDashboard = function () {
 
       <button class="detail-btn">📄 Detayları Görüntüle ve Düzenle</button>
     `;
+
     grid.appendChild(card);
   });
 };
@@ -235,13 +232,13 @@ window.renderDashboard = function () {
 // -----------------------------------------------------------------------------
 window.openDetailModal = student => {
   currentModalStudent = student;
-  currentModalSubject = "matematik"; // Varsayılan açılış dersi
+  currentModalSubject = "matematik";
 
   document.getElementById("modal-student-name").textContent = `${student} - Detaylar`;
-  
+
   renderSubjectSelector("matematik");
   renderModalTable("matematik");
-  
+
   document.getElementById("detail-modal").style.display = "flex";
 };
 
@@ -250,7 +247,7 @@ window.closeModal = () => {
 };
 
 // -----------------------------------------------------------------------------
-// 8. DERS SEÇİCİ (MATEMATİK / TÜRKÇE GEÇİŞİ)
+// 8. DERS SEÇİCİ
 // -----------------------------------------------------------------------------
 window.renderSubjectSelector = function (subject) {
   currentModalSubject = subject;
@@ -272,16 +269,13 @@ window.changeModalSubject = function (subject) {
   currentModalSubject = subject;
   renderSubjectSelector(subject);
   renderModalTable(subject);
-  // Açık olan menüyü kapat
-  const wrap = document.getElementById("wrapper-subject");
-  if(wrap) wrap.classList.remove("open");
+  document.getElementById("wrapper-subject")?.classList.remove("open");
 };
 
 // -----------------------------------------------------------------------------
-// 9. CUSTOM SELECT (AÇILIR KUTU) MANTIĞI
+// 9. DROPDOWN
 // -----------------------------------------------------------------------------
 window.toggleCustomSelect = function (key) {
-  // Diğer açık olanları kapat
   document.querySelectorAll(".custom-select-wrapper.open")
     .forEach(el => el.id !== `wrapper-${key}` && el.classList.remove("open"));
 
@@ -289,7 +283,6 @@ window.toggleCustomSelect = function (key) {
   if (wrap) wrap.classList.toggle("open");
 };
 
-// Sayfanın boş bir yerine tıklayınca kapanması için
 window.addEventListener("click", e => {
   if (!e.target.closest(".custom-select-wrapper")) {
     document.querySelectorAll(".custom-select-wrapper.open")
@@ -297,7 +290,6 @@ window.addEventListener("click", e => {
   }
 });
 
-// Dropdown HTML Oluşturucu
 function createStatusDropdown(key, currentValue) {
   const current = getStatusOption(currentValue);
 
@@ -317,20 +309,17 @@ function createStatusDropdown(key, currentValue) {
     </div>`;
 }
 
-// Seçim Yapıldığında Çalışır
 window.selectOption = function (key, value) {
-  // Firebase'e yaz
   set(ref(db, `progress/${key}`), value);
   
-  // Local veriyi güncelle (arayüz hızlı tepki versin diye)
   globalData[key] = value;
 
-  // UI Güncelle
   const wrap = document.getElementById(`wrapper-${key}`);
   if (!wrap) return;
 
   const selected = getStatusOption(value);
   const trigger = wrap.querySelector(".custom-select-trigger");
+
   trigger.className = `custom-select-trigger ${selected.class}`;
   trigger.innerHTML = `<span>${selected.icon}</span> <span class="arrow">▼</span>`;
 
@@ -338,24 +327,26 @@ window.selectOption = function (key, value) {
 };
 
 // -----------------------------------------------------------------------------
-// 10. MODAL TABLOSU (KİTAP ve BANKA SÜTUNLARI İLE)
+// 10. MODAL TABLOSU
 // -----------------------------------------------------------------------------
 function renderModalTable(subject) {
   const tbody = document.getElementById("modal-table-body");
   tbody.innerHTML = "";
 
   dgsTopics[subject].forEach((topic, i) => {
-    // Başlık Satırı
     if (topic.ad.startsWith("#")) {
-      tbody.innerHTML += `<tr class="unit-header"><td colspan="5" style="color:var(--accent-pink); font-weight:800; padding-top:15px;">${topic.ad}</td></tr>`;
+      tbody.innerHTML += `
+        <tr class="unit-header">
+          <td colspan="5" style="color:var(--accent-pink); font-weight:800; padding-top:15px;">
+            ${topic.ad}
+          </td>
+        </tr>`;
       return;
     }
 
-    // Benzersiz Anahtarlar
     const bookKey = `dgs_dark_${subject}_kitap_${i}_${currentModalStudent}`;
     const bankKey = `dgs_dark_${subject}_banka_${i}_${currentModalStudent}`;
 
-    // Tablo Satırı
     tbody.innerHTML += `
       <tr>
         <td>${topic.ad}</td>
